@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
-import 'package:keyboard_utils/keyboard_utils.dart';
-import 'package:keyboard_utils/keyboard_listener.dart' as keyboard_listener;
-import 'package:keyboard_utils/widgets.dart';
+import 'package:keyboard_utils_fork/keyboard_utils.dart';
+import 'package:keyboard_utils_fork/keyboard_listener.dart' as keyboard_listener;
+import 'package:keyboard_utils_fork/widgets.dart';
 
 void main() => runApp(MyApp());
 

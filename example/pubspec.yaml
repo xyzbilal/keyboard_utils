@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  keyboard_utils:
+  keyboard_utils_fork:
     path: ../
 
 flutter:

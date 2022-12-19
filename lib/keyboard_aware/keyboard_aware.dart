@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide KeyboardListener;
-import 'package:keyboard_utils/keyboard_listener.dart';
-import 'package:keyboard_utils/keyboard_options.dart';
-import 'package:keyboard_utils/keyboard_utils.dart';
+import 'package:keyboard_utils_fork/keyboard_listener.dart';
+import 'package:keyboard_utils_fork/keyboard_options.dart';
+import 'package:keyboard_utils_fork/keyboard_utils.dart';
 
 class KeyboardAware extends StatefulWidget {
   const KeyboardAware({required this.builder});
