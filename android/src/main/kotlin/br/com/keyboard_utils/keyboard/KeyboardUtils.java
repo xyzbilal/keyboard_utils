@@ -74,13 +74,11 @@ public final class KeyboardUtils {
         activity.getWindow().getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                System.out.println("test 软键盘 30+ 处理 222");
                 int imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
                 int navHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
                 boolean hasNavigationBar = insets.isVisible(WindowInsetsCompat.Type.navigationBars()) &&
                         insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom > 0;
                 int height = hasNavigationBar ? Math.max(imeHeight - navHeight, 0) : imeHeight;
-                System.out.println("test 软键盘 22 height=" + height);
                 if (height == 0) {
                     listener.hide();
                 } else {
@@ -127,7 +125,6 @@ public final class KeyboardUtils {
      */
     public void handleKeyboardHeightByBelow31Changed() {
         if (keyboardSessionTimer != null) return;
-        System.out.println("test 软键盘 30-  处理");
         keyboardSessionTimer = new CountDownTimer(150, 1) {
             @Override
             public void onTick(long millisUntilFinished) {
