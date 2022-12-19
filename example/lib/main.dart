@@ -12,6 +12,7 @@ void main() => runApp(MyApp());
 class KeyboardBloc {
   KeyboardUtils _keyboardUtils = KeyboardUtils();
   StreamController<double> _streamController = StreamController<double>();
+
   Stream<double> get stream => _streamController.stream;
 
   KeyboardUtils get keyboardUtils => _keyboardUtils;
@@ -45,10 +46,27 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   KeyboardBloc _bloc = KeyboardBloc();
 
+  KeyboardUtils _keyboardUtils = KeyboardUtils();
+
+  double tempHeight = 0;
+
+  int tempId;
+
   @override
   void initState() {
     super.initState();
-
+    tempId = _keyboardUtils.add(
+      listener: keyboard_listener.KeyboardListener(
+        willHideKeyboard: () {
+          tempHeight = 0;
+          setState(() {});
+        },
+        willShowKeyboard: (result) {
+          tempHeight = result;
+          setState(() {});
+        },
+      ),
+    );
     _bloc.start();
   }
 
@@ -56,19 +74,30 @@ class _MyAppState extends State<MyApp> {
     return Center(
       child: Column(
         children: <Widget>[
-          TextField(),
-          TextField(
-            keyboardType: TextInputType.number,
+          Expanded(
+            child: KeyboardAware(
+              builder: (context, keyboardConfig) {
+                return Center(
+                  child: Text(
+                    'is keyboard open: ${keyboardConfig.isKeyboardOpen}\n'
+                    'Height: ${keyboardConfig.keyboardHeight}',
+                  ),
+                );
+              },
+            ),
           ),
-          TextField(),
-          SizedBox(
-            height: 30,
+          Container(
+            height: 50,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              // keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: '请输入',
+              ),
+            ),
           ),
-          KeyboardAware(
-            builder: (context, keyboardConfig) {
-              return Text('is keyboard open: ${keyboardConfig.isKeyboardOpen}\n'
-                  'Height: ${keyboardConfig.keyboardHeight}');
-            },
+          Container(
+            height: tempHeight,
           ),
         ],
       ),
@@ -106,6 +135,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Keyboard Utils Sample'),
         ),
+        resizeToAvoidBottomInset: false,
         body: buildSampleUsingKeyboardAwareWidget(),
       ),
     );
@@ -114,7 +144,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     _bloc.dispose();
-
+    _keyboardUtils.unsubscribeListener(subscribingId: tempId);
     super.dispose();
   }
 }

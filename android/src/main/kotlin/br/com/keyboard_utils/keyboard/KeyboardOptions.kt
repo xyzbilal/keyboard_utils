@@ -1,4 +1,4 @@
-package br.com.keyboard_utils.manager
+package br.com.keyboard_utils.keyboard;
 
 import org.json.JSONObject
 
