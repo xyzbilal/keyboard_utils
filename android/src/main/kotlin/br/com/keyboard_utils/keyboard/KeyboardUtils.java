@@ -33,9 +33,11 @@ public final class KeyboardUtils {
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener;
     // 导航高度
     private int mNavHeight;
+
+    // 是否有导航栏
+    private boolean mHasNav;
     // 倒计时
     private CountDownTimer keyboardSessionTimer;
-    private int sDecorViewDelta = 0;
 
     private KeyboardHeightListener listener;
 
@@ -79,6 +81,7 @@ public final class KeyboardUtils {
                 boolean hasNavigationBar = insets.isVisible(WindowInsetsCompat.Type.navigationBars()) &&
                         insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom > 0;
                 int height = hasNavigationBar ? Math.max(imeHeight - navHeight, 0) : imeHeight;
+                System.out.println("test 软键盘 31以上 height=" + height);
                 if (height == 0) {
                     listener.hide();
                 } else {
@@ -113,6 +116,8 @@ public final class KeyboardUtils {
         //获取到导航栏高度之后再添加布局监听
         getNavigationBarHeight((height, hasNav) -> {
             mNavHeight = height;
+            mHasNav = hasNav;
+            System.out.println("test 导航 height=" + height + " mHasNav=" + mHasNav);
             contentView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
         });
 
@@ -134,10 +139,12 @@ public final class KeyboardUtils {
             @Override
             public void onFinish() {
                 int height = getDecorViewInvisibleHeight();
-                if (height == 0) {
+                int tempHeight = mHasNav ? Math.max(height - mNavHeight, 0) : height;
+                System.out.println("test 软键盘 31以下 tempHeight=" + tempHeight);
+                if (tempHeight == 0) {
                     listener.hide();
                 } else {
-                    listener.open(height);
+                    listener.open(tempHeight);
                 }
                 keyboardSessionTimer.cancel();
                 keyboardSessionTimer = null;
@@ -152,13 +159,8 @@ public final class KeyboardUtils {
         if (decorView == null) return sDecorViewInvisibleHeightPre;
         final Rect outRect = new Rect();
         decorView.getWindowVisibleDisplayFrame(outRect);
-
         int delta = Math.abs(decorView.getBottom() - outRect.bottom);
-        if (delta <= mNavHeight) {
-            sDecorViewDelta = delta;
-            return 0;
-        }
-        return delta - sDecorViewDelta;
+        return delta;
     }
 
 
