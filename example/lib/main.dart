@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_utils_fork/keyboard_utils.dart';
-import 'package:keyboard_utils_fork/keyboard_listener.dart' as keyboard_listener;
+import 'package:keyboard_utils_fork/keyboard_listener.dart'
+    as keyboard_listener;
 import 'package:keyboard_utils_fork/widgets.dart';
 
 void main() => runApp(MyApp());
@@ -75,10 +77,16 @@ class _MyAppState extends State<MyApp> {
           Expanded(
             child: KeyboardAware(
               builder: (context, keyboardConfig) {
-                return Center(
-                  child: Text(
-                    'is keyboard open: ${keyboardConfig.isKeyboardOpen}\n'
-                    'Height: ${keyboardConfig.keyboardHeight}',
+                return GestureDetector(
+                  onTap: () {
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+                  },
+                  behavior: HitTestBehavior.translucent,
+                  child: Center(
+                    child: Text(
+                      'is keyboard open: ${keyboardConfig.isKeyboardOpen}\n'
+                      'Height: ${keyboardConfig.keyboardHeight}',
+                    ),
                   ),
                 );
               },
