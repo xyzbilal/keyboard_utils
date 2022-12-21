@@ -1,6 +1,6 @@
 name: keyboard_utils_fork
 description: fork from https://github.com/IsaiasSantana/keyboard_utils
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/hello-coder-xu/keyboard_utils.git
 
 environment:
