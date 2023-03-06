@@ -46,17 +46,17 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
     private func registerEvents() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
+                                               name: NSNotification.Name.UIKeyboardWillShow,
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
+                                               name: NSNotification.Name.UIKeyboardWillHide,
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
-                                               name: UIResponder.keyboardDidShowNotification,
+                                               name: NSNotification.Name.UIKeyboardDidShow,
                                                object: nil)
     }
 
