@@ -46,17 +46,17 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
     private func registerEvents() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
+                                               name: NSNotification.Name.UIKeyboardWillShow,
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
+                                               name: NSNotification.Name.UIKeyboardWillHide,
                                                object: nil)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
-                                               name: UIResponder.keyboardDidShowNotification,
+                                               name: NSNotification.Name.UIKeyboardDidShow,
                                                object: nil)
     }
 
@@ -70,7 +70,7 @@ public class SwiftKeyboardUtilsPlugin: NSObject, FlutterPlugin ,FlutterStreamHan
 
     @objc private func checkIsKeyboardOpen(notification: Notification) {
         func keyboardHeight() -> Double? {
-            if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 return Double(keyboardRectangle.height)
             }
