@@ -31,12 +31,15 @@ class KeyboardNewUtils : ViewTreeObserver.OnGlobalLayoutListener {
         if (windowContentView == null) {
             return
         }
+        println("显示 原生 onGlobalLayout")
+        val currentViewHeight = windowContentView?.height ?: 0
         val rect = Rect()
         windowContentView?.getWindowVisibleDisplayFrame(rect)
 
         val rectHeight = rect.height()
         if (recordRectHeight == 0) {
             recordRectHeight = rectHeight
+            println("显示 rectHeight=$rectHeight")
         }
         val keyboardHeight: Float = (recordRectHeight - rectHeight).toFloat()
 
@@ -44,8 +47,18 @@ class KeyboardNewUtils : ViewTreeObserver.OnGlobalLayoutListener {
         val newState: Double = rectHeight / currentViewRootHeight.toDouble()
         val keyboardOpen = newState < 0.85
 
+        val result = "显示 onGlobalLayout " +
+                "\nrectHeight=$rectHeight " +
+                "\ncurrentViewHeight=$currentViewHeight " +
+                "\nrect=$rect " +
+                "\ndiff=$keyboardHeight " +
+                "\ndiffDpi=${keyboardHeight / density} " +
+                "\nkeyboardOpen=$keyboardOpen " +
+                "\nnewState=$newState "
+
 
         if (keyboardHeight != recordKeyboardHeight) {
+            println("显示 result=$result")
             recordKeyboardHeight = keyboardHeight
             val keyboardHeightDp = keyboardHeight / density
             if (keyboardOpen) {

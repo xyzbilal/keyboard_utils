@@ -7,13 +7,12 @@ class NormalPage extends StatefulWidget {
   State<NormalPage> createState() => _NormalPageState();
 }
 
-class _NormalPageState extends State<NormalPage> {
+class _NormalPageState extends State<NormalPage> with WidgetsBindingObserver {
   List<String> message = [];
   TextEditingController controller = TextEditingController();
 
-
   /// 软键盘高度(安卓oppo测试出来的高度)
-  double keyboardHeight = 293;
+  double keyboardHeight = 0;
 
   /// 底部高度
   double bottomContentHeight = 208;
@@ -23,11 +22,36 @@ class _NormalPageState extends State<NormalPage> {
 
   double get tempSafeHeight => MediaQuery.of(context).padding.bottom;
 
+  @override
+  void didChangeMetrics() {
+    var viewInsets = MediaQuery.of(context).viewInsets;
+    var padding = MediaQuery.of(context).padding;
+    var viewPadding = MediaQuery.of(context).viewPadding;
 
+    String result = '显示 '
+        '\nviewInsets.top=${viewInsets.top} '
+        '\nviewInsets.bottom=${viewInsets.bottom} '
+        '\npadding.top=${padding.top} '
+        '\npadding.bottom=${padding.bottom} '
+        '\nviewPadding.top=${viewPadding.bottom} '
+        '\nviewPadding.bottom=${viewPadding.bottom} ';
+
+    print(result);
+    setState(() {
+      keyboardHeight = viewInsets.bottom;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   @override
   void dispose() {
     controller.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -38,13 +62,14 @@ class _NormalPageState extends State<NormalPage> {
         title: Text('normal 底部安全距离$tempSafeHeight'),
         centerTitle: true,
       ),
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Expanded(
             child: messageView(),
           ),
           inputView(),
-          // bottomView(),
+          bottomView(),
         ],
       ),
     );
@@ -114,9 +139,29 @@ class _NormalPageState extends State<NormalPage> {
 
   /// 底部弹出-常用语视图
   Widget bottomView() {
-    double tempHeight = 0;
+    double tempHeight = keyboardHeight;
+
+    return Container(
+      padding: EdgeInsets.only(bottom: tempSafeHeight),
+      height: tempSafeHeight + tempHeight + 1,
+      child: Column(
+        children: [
+          const Divider(height: 1),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: List.generate(
+                  30,
+                  (index) => Text('$index' * 30),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 20),
       height: tempSafeHeight + tempHeight + 1,
       alignment: Alignment.center,
       child: Padding(
@@ -129,7 +174,7 @@ class _NormalPageState extends State<NormalPage> {
                 child: Column(
                   children: List.generate(
                     30,
-                        (index) => Text('$index' * 30),
+                    (index) => Text('$index' * 30),
                   ),
                 ),
               ),

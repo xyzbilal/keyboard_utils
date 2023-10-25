@@ -44,9 +44,9 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
     tempId = _keyboardUtils.add(
       listener: keyboard_listener.KeyboardListener(
         willHideKeyboard: () {
-          lastResult = tempSafeBottomHeight;
+          // lastResult = tempSafeBottomHeight;
           print('软键盘高度 willHideKeyboard tempHeight=$tempKeyBoardHeight');
-          setState(() {});
+          // setState(() {});
         },
         willShowKeyboard: (result) {
           tempKeyBoardHeight = result;
@@ -65,8 +65,8 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
           //
           // lastResult = tempKeyboardToBottom;
 
-          lastResult=tempKeyBoardHeight;
-          setState(() {});
+          // lastResult = tempKeyBoardHeight;
+          // setState(() {});
         },
       ),
     );
@@ -83,19 +83,27 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    // final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
-    // final paddingBottom = MediaQuery.of(context).padding.bottom;
-    // print('软键盘 viewInsetsBottom=$viewInsetsBottom paddingBottom=$paddingBottom');
-    // if (viewInsetsBottom > 0) {
-    //   // 软键盘弹起
-    //   print('软键盘 开启');
-    // } else {
-    //   // 软键盘收起
-    //   print('软键盘 关闭');
-    // }
-    // setState(() {
-    //   lastResult = viewInsetsBottom;
-    // });
+    final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
+    final paddingBottom = MediaQuery.of(context).padding.bottom;
+
+
+
+    print(
+        '软键盘 viewInsetsBottom=$viewInsetsBottom paddingBottom=$paddingBottom');
+    if (viewInsetsBottom > 0) {
+      // 软键盘弹起
+      // print('软键盘 开启');
+
+      if (viewInsetsBottom > lastResult) {
+        setState(() {
+          lastResult = viewInsetsBottom;
+        });
+      }
+      // print('软键盘 开启 且 viewInsetsBottom==paddingBottom');
+    } else {
+      // 软键盘收起
+      // print('软键盘 关闭');
+    }
   }
 
   @override
@@ -104,7 +112,7 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('Keyboard Utils Sample'),
       ),
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: buildSampleUsingKeyboardAwareWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
