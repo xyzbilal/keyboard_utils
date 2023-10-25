@@ -4,7 +4,6 @@ import 'package:keyboard_utils_example/keyborad_bloc.dart';
 import 'package:keyboard_utils_fork/keyboard_utils.dart';
 import 'package:keyboard_utils_fork/keyboard_listener.dart'
     as keyboard_listener;
-import 'package:keyboard_utils_fork/widgets.dart';
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -13,7 +12,7 @@ class InputPage extends StatefulWidget {
   State<InputPage> createState() => _InputPageState();
 }
 
-class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
+class _InputPageState extends State<InputPage> {
   KeyboardBloc _bloc = KeyboardBloc();
 
   KeyboardUtils _keyboardUtils = KeyboardUtils();
@@ -40,33 +39,19 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     tempId = _keyboardUtils.add(
       listener: keyboard_listener.KeyboardListener(
         willHideKeyboard: () {
-          // lastResult = tempSafeBottomHeight;
-          print('软键盘高度 willHideKeyboard tempHeight=$tempKeyBoardHeight');
-          // setState(() {});
+          tempKeyBoardHeight = 0;
+          print('软键盘 关闭');
+          setState(() {});
         },
         willShowKeyboard: (result) {
           tempKeyBoardHeight = result;
-          print('软键盘高度 willShowKeyboard tempHeight=$tempKeyBoardHeight');
-          // print('输入页面 willShowKeyboard 像素=$tempKeyBoardHeight');
-          // tempKeyBoardToRatio = tempKeyBoardHeight / devicePixelRatio;
-          // print('输入页面 willShowKeyboard 除以密度后=$tempKeyBoardToRatio');
-          //
-          // tempKeyBoardToTop = tempKeyBoardToRatio - tempSafeTopHeight;
-          // print(
-          //     '输入页面 willShowKeyboard 减去顶部状态栏安全高度($tempSafeTopHeight)=$tempKeyBoardToTop');
-          // // tempKeyboardToBottom = tempKeyBoardToTop - tempSafeBottomHeight;
-          // tempKeyboardToBottom = tempKeyBoardToTop + 8;
-          // print(
-          //     '输入页面 willShowKeyboard 减去底部安全高度($tempSafeBottomHeight)=$tempKeyboardToBottom');
-          //
-          // lastResult = tempKeyboardToBottom;
 
-          // lastResult = tempKeyBoardHeight;
-          // setState(() {});
+          print(
+              '软键盘高度 打开 willShowKeyboard  tempKeyBoardHeight=$tempKeyBoardHeight');
+          setState(() {});
         },
       ),
     );
@@ -75,35 +60,9 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _bloc.dispose();
     _keyboardUtils.unsubscribeListener(subscribingId: tempId);
     super.dispose();
-  }
-
-  @override
-  void didChangeMetrics() {
-    final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
-    final paddingBottom = MediaQuery.of(context).padding.bottom;
-
-
-
-    print(
-        '软键盘 viewInsetsBottom=$viewInsetsBottom paddingBottom=$paddingBottom');
-    if (viewInsetsBottom > 0) {
-      // 软键盘弹起
-      // print('软键盘 开启');
-
-      if (viewInsetsBottom > lastResult) {
-        setState(() {
-          lastResult = viewInsetsBottom;
-        });
-      }
-      // print('软键盘 开启 且 viewInsetsBottom==paddingBottom');
-    } else {
-      // 软键盘收起
-      // print('软键盘 关闭');
-    }
   }
 
   @override
@@ -123,34 +82,25 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
 
   /// 使用 KeyboardAware
   Widget buildSampleUsingKeyboardAwareWidget() {
+    final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
+    final viewPaddingBottom = MediaQuery.of(context).viewPadding.bottom;
+
     return Center(
       child: Column(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(bottom: 30),
-            child: Text('当前顶部安全距离：$tempSafeTopHeight'),
-          ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 30),
-            child: Text('当前底部安全距离：$tempSafeBottomHeight'),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                SystemChannels.textInput.invokeMethod('TextInput.hide');
-              },
-              behavior: HitTestBehavior.translucent,
-              child: Center(
-                child: Text(
-                  '软键盘是否开启: ${_keyboardUtils.isKeyboardOpen}\n'
-                  '软键盘像素高度: $tempKeyBoardHeight\n'
-                  '软键盘除以屏幕密度后: $tempKeyBoardToRatio\n'
-                  '减去顶部($tempSafeBottomHeight)高度: $tempKeyBoardToTop\n'
-                  '减去底部($tempSafeBottomHeight)高度: $tempKeyboardToBottom',
-                ),
-              ),
+            child: Text(
+              '当前顶部安全距离：$tempSafeTopHeight'
+              '\n当前底部安全距离：$tempSafeBottomHeight'
+              '\n当前底部距离：$viewPaddingBottom'
+              '\n软键盘是否开启: ${_keyboardUtils.isKeyboardOpen}'
+              '\n软键盘高度: $viewInsetsBottom'
+              '\n屏幕密度: $devicePixelRatio'
+              '\n动态软键盘高度: $tempKeyBoardHeight',
             ),
           ),
+          Spacer(),
           Container(
             height: 50,
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -162,7 +112,7 @@ class _InputPageState extends State<InputPage> with WidgetsBindingObserver {
             ),
           ),
           Container(
-            height: lastResult,
+            height: tempKeyBoardHeight,
           ),
         ],
       ),

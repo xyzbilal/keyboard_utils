@@ -33,24 +33,26 @@ class KeyboardNewUtils : ViewTreeObserver.OnGlobalLayoutListener {
         }
         println("显示 原生 onGlobalLayout")
         val currentViewHeight = windowContentView?.height ?: 0
+        val currentViewRootHeight = windowContentView?.rootView?.height ?: 0
+
+        val diffHeight = currentViewRootHeight - currentViewHeight
+
         val rect = Rect()
         windowContentView?.getWindowVisibleDisplayFrame(rect)
 
-        val rectHeight = rect.height()
-        if (recordRectHeight == 0) {
-            recordRectHeight = rectHeight
-            println("显示 rectHeight=$rectHeight")
-        }
-        val keyboardHeight: Float = (recordRectHeight - rectHeight).toFloat()
-
-        val currentViewRootHeight = windowContentView?.rootView?.height ?: 0
+        var rectHeight = rect.height()
+        var rectBottom = rect.bottom;
+        println("显示 after rectHeight=$rectHeight rectBottom=$rectBottom")
         val newState: Double = rectHeight / currentViewRootHeight.toDouble()
+        val keyboardHeight: Float = currentViewHeight - rectBottom.toFloat()
         val keyboardOpen = newState < 0.85
 
         val result = "显示 onGlobalLayout " +
                 "\nrectHeight=$rectHeight " +
-                "\ncurrentViewHeight=$currentViewHeight " +
+                "\nrectBottom=$rectBottom " +
+                "\ncurrentViewHeight=$currentViewHeight" +
                 "\nrect=$rect " +
+                "\ndiffHeight=${currentViewRootHeight - currentViewHeight} " +
                 "\ndiff=$keyboardHeight " +
                 "\ndiffDpi=${keyboardHeight / density} " +
                 "\nkeyboardOpen=$keyboardOpen " +
@@ -63,7 +65,7 @@ class KeyboardNewUtils : ViewTreeObserver.OnGlobalLayoutListener {
             val keyboardHeightDp = keyboardHeight / density
             if (keyboardOpen) {
                 println("显示 键盘打开 recordKeyboardHeight=$recordKeyboardHeight dpi=$keyboardHeightDp")
-                listener?.open(recordKeyboardHeight)
+                listener?.open(keyboardHeightDp)
             } else {
                 println("显示 键盘关闭")
                 listener?.hide()

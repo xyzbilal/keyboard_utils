@@ -1,7 +1,6 @@
 package br.com.keyboard_utils
 
 import android.app.Activity
-import br.com.keyboard_utils.keyboard.DisplayUtil
 import br.com.keyboard_utils.keyboard.KeyboardHeightListener
 import br.com.keyboard_utils.keyboard.KeyboardNewUtils;
 import br.com.keyboard_utils.keyboard.KeyboardOptions;
@@ -102,13 +101,12 @@ class KeyboardUtilsPlugin : FlutterPlugin, ActivityAware, EventChannel.StreamHan
                 object : KeyboardHeightListener {
                     override fun open(height: Float) {
                         println("显示 原生软键盘高度 height=$height")
-                        val tempHeight = DisplayUtil.pxTodp(activity, height)
-                        val resultJSON = KeyboardOptions(isKeyboardOpen = true, height = tempHeight)
+                        val resultJSON = KeyboardOptions(isKeyboardOpen = true, height = height)
                         events?.success(resultJSON.toJson())
                     }
 
                     override fun hide() {
-                        val resultJSON = KeyboardOptions(isKeyboardOpen = false, height = 0)
+                        val resultJSON = KeyboardOptions(isKeyboardOpen = false, height = 0f)
                         events?.success(resultJSON.toJson())
                     }
                 })
