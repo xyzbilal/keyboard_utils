@@ -84,36 +84,41 @@ class _InputPageState extends State<InputPage> {
     final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
     final viewPaddingBottom = MediaQuery.of(context).viewPadding.bottom;
 
-    return Center(
-      child: Column(
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(bottom: 30),
-            child: Text(
-              '当前顶部安全距离：$tempSafeTopHeight'
-              '\n当前底部安全距离：$tempSafeBottomHeight'
-              '\n当前底部距离：$viewPaddingBottom'
-              '\n软键盘是否开启: ${_keyboardUtils.isKeyboardOpen}'
-              '\n软键盘高度: $viewInsetsBottom'
-              '\n屏幕密度: $devicePixelRatio'
-              '\n动态软键盘高度: $tempKeyBoardHeight',
-            ),
-          ),
-          Spacer(),
-          Container(
-            height: 50,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              // keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: '请输入',
+    return Container(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).padding.bottom,
+      ),
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(bottom: 30),
+              child: Text(
+                '当前顶部安全距离：$tempSafeTopHeight'
+                '\n当前底部安全距离：$tempSafeBottomHeight'
+                '\n当前底部距离：$viewPaddingBottom'
+                '\n软键盘是否开启: ${_keyboardUtils.isKeyboardOpen}'
+                '\n软键盘高度: $viewInsetsBottom'
+                '\n屏幕密度: $devicePixelRatio'
+                '\n动态软键盘高度: $tempKeyBoardHeight',
               ),
             ),
-          ),
-          Container(
-            height: tempKeyBoardHeight,
-          ),
-        ],
+            Spacer(),
+            Container(
+              height: 50,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                // keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: '请输入',
+                ),
+              ),
+            ),
+            Container(
+              height: tempKeyBoardHeight,
+            ),
+          ],
+        ),
       ),
     );
   }
