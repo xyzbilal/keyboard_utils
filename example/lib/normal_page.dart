@@ -160,28 +160,28 @@ class _NormalPageState extends State<NormalPage> with WidgetsBindingObserver {
         ],
       ),
     );
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 20),
-      height: tempSafeHeight + tempHeight + 1,
-      alignment: Alignment.center,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: tempSafeHeight),
-        child: Column(
-          children: [
-            const Divider(height: 1),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(
-                    30,
-                    (index) => Text('$index' * 30),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    // return AnimatedContainer(
+    //   duration: const Duration(milliseconds: 20),
+    //   height: tempSafeHeight + tempHeight + 1,
+    //   alignment: Alignment.center,
+    //   child: Padding(
+    //     padding: EdgeInsets.only(bottom: tempSafeHeight),
+    //     child: Column(
+    //       children: [
+    //         const Divider(height: 1),
+    //         Expanded(
+    //           child: SingleChildScrollView(
+    //             child: Column(
+    //               children: List.generate(
+    //                 30,
+    //                 (index) => Text('$index' * 30),
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

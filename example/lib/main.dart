@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keyboard_utils_example/input_page.dart';
 import 'package:keyboard_utils_example/main_page.dart';
-import 'package:keyboard_utils_example/normal_page.dart';
 
 void main() {
   runApp(const MyApp());
