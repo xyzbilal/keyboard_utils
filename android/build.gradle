@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 //    implementation files('C:\\Users\\Administrator\\fvm\\default\\bin\\cache\\artifacts\\engine\\android-arm\\flutter.jar')
 }
